@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Data Relay Center | Example Javascript Client</title>
+</head>
+<body>
+<p>Open the console to see the packets to/from the Data Relay Center (DRC) server.</p>
+
+<script type="text/javascript" src="drc_client.js"></script>
+
+<script type="text/javascript">
+(function() {
+	var drc = new DRCClient('ws://127.0.0.1:7328');
+
+	drc.debug = true;
+
+	drc.addEventListener('connect', function(msg) {
+		drc.JoinChannel('Test-Channel', 'test-client', false);
+	});
+})();
+</script>
+
+</body>
+</html>
