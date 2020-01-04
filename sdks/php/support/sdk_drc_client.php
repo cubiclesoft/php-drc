@@ -188,7 +188,23 @@
 			$result = $this->Write(json_encode($data, JSON_UNESCAPED_SLASHES), WebSocket::FRAMETYPE_TEXT);
 			if (!$result["success"])  return $result;
 
-			if ($wait)
+			if (is_string($wait))
+			{
+				$result = $this->Wait();
+				while ($result["success"])
+				{
+					do
+					{
+						$result = $this->Read();
+						if (!$result["success"])  return $result;
+
+						if ($result["data"] !== false && isset($result["data"]["cmd"]) && $result["data"]["cmd"] === $wait && ($to < 0 || $result["data"]["from"] === $to))  return $result;
+					} while ($result["data"] !== false);
+
+					$result = $this->Wait();
+				}
+			}
+			else if ($wait)
 			{
 				do
 				{

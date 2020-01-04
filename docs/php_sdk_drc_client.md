@@ -124,11 +124,13 @@ Parameters:
 * $cmd - A string containing the command to send.
 * $to - An integer containing the client ID to send to or -1 to broadcast the command to all allowed clients.
 * $options - An array containing additional key-value pairs to send (Default is array()).
-* $wait - A boolean that indicates whether or not to wait for completion (Default is false).
+* $wait - A string containing a command to wait for in response or a boolean that indicates whether or not to wait for completion (Default is false).
 
 Returns:  A standard array of information.
 
 This function sends a command to one or more clients on the channel.  A command is whatever the application wants it to be but should be associated with the protocol used for the channel.  Only authorities and clients with sending privileges can send commands.
+
+When $wait is true, this function only waits until the data has been sent.  When $wait is a string, the function waits for an incoming response from the client specified by $to.
 
 DRCClient::GetRandomAuthClientID($channel)
 ------------------------------------------
