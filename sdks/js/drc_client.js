@@ -153,7 +153,7 @@
 				extra: extra
 			};
 
-			if (authtoken)  msg.authtoken = authtoken;
+			if (authtoken)  msg.token = authtoken;
 
 			SendMessage(msg);
 		};
@@ -166,7 +166,7 @@
 				protocol: protocol
 			};
 
-			if (authtoken)  msg.authtoken = authtoken;
+			if (authtoken)  msg.token = authtoken;
 
 			SendMessage(msg);
 		};

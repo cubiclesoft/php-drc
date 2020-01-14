@@ -39,8 +39,8 @@
 			// Install the service.
 			$args = array();
 			$options = array(
-				"nixuser" => $config["serviceuser"],
-				"nixgroup" => $config["serviceuser"]
+				"nixuser" => "php-drc",
+				"nixgroup" => "php-drc"
 			);
 
 			$result = $sm->Install($servicename, __FILE__, $args, $options, true);
@@ -158,7 +158,7 @@
 			$tokenmap[$info["tokenid"]] = array(
 				"expires" => time() + 30,
 				"token" => $info["token"],
-				"channel" => $channels[$channel]["channelname"],
+				"channel" => $channels[$channel]["channel"],
 				"protocol" => $channels[$channel]["protocol"],
 				"clientmode" => $info["mode"],
 				"extra" => $info["extra"]
@@ -311,7 +311,7 @@
 
 										if (isset($tokenmap[$id2]) && Str::CTstrcmp($tokenmap[$id2]["token"], $token) === 0 && $tokenmap[$id2]["channel"] === $data["channel"] && $tokenmap[$id2]["protocol"] === $data["protocol"])
 										{
-											$info["mode"] = $tokenmap[$id2]["mode"];
+											$info["mode"] = $tokenmap[$id2]["clientmode"];
 											$info["tokenid"] = $id2;
 											$info["token"] = $token;
 											$info["extra"] = $tokenmap[$id2]["extra"];

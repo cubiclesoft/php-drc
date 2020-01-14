@@ -370,11 +370,25 @@
 	{
 		if ($cmd === "install")
 		{
+			// Verify root on *NIX.
+			if (function_exists("posix_geteuid"))
+			{
+				$uid = posix_geteuid();
+				if ($uid !== 0)  CLI::DisplayError("The installer must be run as the 'root' user (UID = 0) to install the system service on *NIX hosts.");
+			}
+
+			// Create the system user/group.
+			ob_start();
+			system("useradd -r -s /bin/false " . escapeshellarg("php-drc"));
+			$output = ob_get_contents() . "\n";
+			ob_end_clean();
+
+			// Install the system service.
 			$cmd = escapeshellarg(PHP_BINARY) . " " . escapeshellarg($rootpath . "/server.php") . " install";
 
 			ob_start();
 			system($cmd);
-			$output = ob_get_contents();
+			$output .= ob_get_contents();
 			ob_end_clean();
 
 			$result = array(
