@@ -358,7 +358,7 @@
 								$client2 = $wsserver->GetClient($id2);
 								if ($client2 === false || $client2->websocket === false)  continue;
 
-								if (!$info["auth"] && ($info2["mode"] === CM_RECV_ONLY || $info2["mode"] === CM_SEND_TO_AUTHS))  continue;
+								if ($id !== $id2 && !$info["auth"] && ($info2["mode"] === CM_RECV_ONLY || $info2["mode"] === CM_SEND_TO_AUTHS))  continue;
 
 								$ws2 = $client2->websocket;
 
