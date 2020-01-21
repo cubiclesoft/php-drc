@@ -81,6 +81,8 @@
 		global $rootpath, $config;
 
 		file_put_contents($rootpath . "/config.dat", json_encode($config, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT));
+
+		chmod($rootpath . "/config.dat", 0640);
 	}
 
 	function GetIPAddress()
@@ -375,13 +377,18 @@
 			{
 				$uid = posix_geteuid();
 				if ($uid !== 0)  CLI::DisplayError("The installer must be run as the 'root' user (UID = 0) to install the system service on *NIX hosts.");
+
+				// Create the system user/group.
+				ob_start();
+				system("useradd -r -s /bin/false " . escapeshellarg("php-drc"));
+				$output = ob_get_contents() . "\n";
+				ob_end_clean();
 			}
 
-			// Create the system user/group.
-			ob_start();
-			system("useradd -r -s /bin/false " . escapeshellarg("php-drc"));
-			$output = ob_get_contents() . "\n";
-			ob_end_clean();
+			// Make sure the configuration is readable by the user.
+			SaveConfig();
+
+			if (function_exists("posix_geteuid"))  @chgrp($rootpath . "/config.dat", "php-drc");
 
 			// Install the system service.
 			$cmd = escapeshellarg(PHP_BINARY) . " " . escapeshellarg($rootpath . "/server.php") . " install";
