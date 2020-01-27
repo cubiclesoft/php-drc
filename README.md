@@ -273,7 +273,7 @@ Documentation
 Limitations
 -----------
 
-Even though the libev PECL extension is available for Windows, the Windows version of the extension is buggy and, even if it weren't buggy, libev falls back to select() on Windows instead of using IOCP.  As a result, the libev PECL extension is always ignored by DRC.  Windows + select() is perfectly fine for testing even though it is limited to around 256 simultaneous connections.
+Even though the libev PECL extension is available for Windows, the Windows version of the extension is buggy and, even if it weren't buggy, libev falls back to select() on Windows instead of using IOCP.  As a result, the libev PECL extension is always ignored by DRC when run on Windows.  Windows + select() is perfectly fine for testing even though it is limited to around 256 simultaneous connections.
 
 Once the system/user/application ulimit is reached, the DRC server spins at 100% CPU as it can't accept new connections [even though there are more are in the queue](http://pod.tst.eu/http://cvs.schmorp.de/libev/ev.pod#The_special_problem_of_accept_ing_wh).  Detecting this issue is difficult.
 
