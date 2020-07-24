@@ -92,7 +92,7 @@
 			return $result;
 		}
 
-		public function JoinChannel($channelname, $protocol, $token, $wait = false)
+		public function JoinChannel($channelname, $protocol, $token, $wait = false, $allowipauth = true)
 		{
 			$data = array(
 				"cmd" => "JOIN",
@@ -101,6 +101,7 @@
 			);
 
 			if ($token !== false)  $data["token"] = $token;
+			if ($allowipauth === false)  $data["ipauth"] = false;
 
 			$result = $this->Write(json_encode($data, JSON_UNESCAPED_SLASHES), WebSocket::FRAMETYPE_TEXT);
 			if (!$result["success"])  return $result;

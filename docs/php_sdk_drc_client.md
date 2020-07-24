@@ -46,8 +46,8 @@ Returns:  A standard array of information.
 
 This function tells the DRC server to generate a temporary grant token for a specific channel.  Only authorities can generate grant tokens.
 
-DRCClient::JoinChannel($channelname, $protocol, $token, $wait = false)
-----------------------------------------------------------------------
+DRCClient::JoinChannel($channelname, $protocol, $token, $wait = false, $allowipauth = true)
+-------------------------------------------------------------------------------------------
 
 Access:  public
 
@@ -57,6 +57,7 @@ Parameters:
 * $protocol - A string containing the protocol the token will be valid for.
 * $token - A boolean of false for no token (e.g. IP whitelist) or a string containing a security or temporary grant token.
 * $wait - A boolean that indicates whether or not to wait for completion (Default is false).
+* $allowipauth - A boolean that indicates whether or not to allow the automatic authority IP address check (Default is true).  Useful for clients that want to connect as a non-authority.
 
 Returns:  A standard array of information.
 

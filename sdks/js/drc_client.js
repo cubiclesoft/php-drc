@@ -159,7 +159,7 @@
 		};
 
 		// Join a channel.
-		$this.JoinChannel = function(channelname, protocol, authtoken) {
+		$this.JoinChannel = function(channelname, protocol, authtoken, allowipauth) {
 			var msg = {
 				cmd: 'JOIN',
 				channel: channelname,
@@ -167,6 +167,7 @@
 			};
 
 			if (authtoken)  msg.token = authtoken;
+			if (allowipauth === false)  msg.ipauth = false;
 
 			SendMessage(msg);
 		};

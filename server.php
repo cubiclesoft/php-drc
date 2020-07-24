@@ -289,35 +289,32 @@
 							"extra" => false
 						);
 
-						if (isset($whitelist[$client->ipaddr]) && ($whitelist[$client->ipaddr] === true || in_array($data["protocol"], $whitelist[$client->ipaddr])))  $info["auth"] = true;
-						else
+						if ((!isset($data["ipauth"]) || $data["ipauth"] !== false) && isset($whitelist[$client->ipaddr]) && ($whitelist[$client->ipaddr] === true || in_array($data["protocol"], $whitelist[$client->ipaddr])))  $info["auth"] = true;
+						else if (isset($data["token"]) && is_string($data["token"]))
 						{
-							if (isset($data["token"]) && is_string($data["token"]))
+							// Scan tokens list in constant time.
+							foreach ($config["tokens"] as $token => $protocols)
 							{
-								// Scan tokens list in constant time.
-								foreach ($config["tokens"] as $token => $protocols)
-								{
-									if (Str::CTstrcmp($token, $data["token"]) === 0 && ($protocols === true || in_array($data["protocol"], $protocols)))  $info["auth"] = true;
-								}
+								if (Str::CTstrcmp($token, $data["token"]) === 0 && ($protocols === true || in_array($data["protocol"], $protocols)))  $info["auth"] = true;
+							}
 
-								// Attempt to match a client token.
-								if (!$info["auth"])
+							// Attempt to match a client token.
+							if (!$info["auth"])
+							{
+								$pos = strrpos($data["token"], "-");
+								if ($pos !== false)
 								{
-									$pos = strrpos($data["token"], "-");
-									if ($pos !== false)
+									$id2 = (int)substr($data["token"], $pos + 1);
+									$token = substr($data["token"], 0, $pos);
+
+									if (isset($tokenmap[$id2]) && Str::CTstrcmp($tokenmap[$id2]["token"], $token) === 0 && $tokenmap[$id2]["channel"] === $data["channel"] && $tokenmap[$id2]["protocol"] === $data["protocol"])
 									{
-										$id2 = (int)substr($data["token"], $pos + 1);
-										$token = substr($data["token"], 0, $pos);
+										$info["mode"] = $tokenmap[$id2]["clientmode"];
+										$info["tokenid"] = $id2;
+										$info["token"] = $token;
+										$info["extra"] = $tokenmap[$id2]["extra"];
 
-										if (isset($tokenmap[$id2]) && Str::CTstrcmp($tokenmap[$id2]["token"], $token) === 0 && $tokenmap[$id2]["channel"] === $data["channel"] && $tokenmap[$id2]["protocol"] === $data["protocol"])
-										{
-											$info["mode"] = $tokenmap[$id2]["clientmode"];
-											$info["tokenid"] = $id2;
-											$info["token"] = $token;
-											$info["extra"] = $tokenmap[$id2]["extra"];
-
-											unset($tokenmap[$id2]);
-										}
+										unset($tokenmap[$id2]);
 									}
 								}
 							}
