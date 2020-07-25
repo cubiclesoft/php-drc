@@ -349,6 +349,11 @@
 
 							if (!$info["auth"])  $client->appdata["no_auth"]++;
 
+							$cleaninfo = $info;
+
+							unset($cleaninfo["tokenid"]);
+							unset($cleaninfo["token"]);
+
 							// Notify all clients with sufficient access to send to the new client.
 							foreach ($channels[$channel]["clients"] as $id2 => $info2)
 							{
@@ -359,16 +364,13 @@
 
 								$ws2 = $client2->websocket;
 
-								unset($info2["tokenid"]);
-								unset($info2["token"]);
-
 								$result3 = array(
 									"channel" => $channel,
 									"success" => true,
 									"cmd" => "JOINED",
 									"from" => 0,
 									"id" => $id,
-									"info" => $info2
+									"info" => $cleaninfo
 								);
 
 								if ($id === $id2)
