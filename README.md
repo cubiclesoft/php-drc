@@ -3,7 +3,7 @@ Data Relay Center (DRC)
 
 A powerful multi-channel, secure, general-purpose WebSocket PHP server and client SDKs for PHP and Javascript.  Similar to how Internet Relay Chat (IRC) works but designed specifically for data and the web!  DRC is the missing communication protocol for the modern web.
 
-[![Donate](https://cubiclesoft.com/res/donate-shield.png)](https://cubiclesoft.com/donate/)
+[![Donate](https://cubiclesoft.com/res/donate-shield.png)](https://cubiclesoft.com/donate/) [![Discord](https://img.shields.io/discord/777282089980526602?label=chat&logo=discord)](https://cubiclesoft.com/product-support/github/)
 
 Features
 --------
