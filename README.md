@@ -262,7 +262,7 @@ It is important to note a race condition here.  If the report finishes running B
 ?>
 ```
 
-This is just one example of what is possible with DRC.  See the Use Cases near the top of this page for more ideas.
+This is just one example of what is possible with DRC and the best thing about DRC is that it is reusable for all kinds of scenarios vs. a WebSocket service that works for one purpose only.  See the Use Cases near the top of this page for more ideas.
 
 Documentation
 -------------
