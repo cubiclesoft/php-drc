@@ -161,7 +161,8 @@
 				"channel" => $channels[$channel]["channel"],
 				"protocol" => $channels[$channel]["protocol"],
 				"clientmode" => $info["mode"],
-				"extra" => $info["extra"]
+				"extra" => $info["extra"],
+				"makeauth" => $info["auth"]
 			);
 		}
 
@@ -258,7 +259,8 @@
 								"channel" => $data["channel"],
 								"protocol" => $data["protocol"],
 								"clientmode" => $data["clientmode"],
-								"extra" => $data["extra"]
+								"extra" => $data["extra"],
+								"makeauth" => (isset($data["makeauth"]) && $data["makeauth"] === true)
 							);
 
 							$result3 = array(
@@ -313,6 +315,7 @@
 										$info["tokenid"] = $id2;
 										$info["token"] = $token;
 										$info["extra"] = $tokenmap[$id2]["extra"];
+										if ($tokenmap[$id2]["makeauth"])  $info["auth"] = true;
 
 										unset($tokenmap[$id2]);
 									}
@@ -401,7 +404,7 @@
 				{
 					if (!isset($data["channel"]))  $result3 = array("channel" => 0, "success" => false, "error" => "The 'channel' is missing.", "errorcode" => "missing_channel");
 					else if (!is_numeric($data["channel"]) || !isset($channels[(int)$data["channel"]]) || !isset($client->appdata["channels"][(int)$data["channel"]]))  $result3 = array("channel" => 0, "success" => false, "error" => "The 'channel' is invalid.", "errorcode" => "invalid_channel");
-					else if (!$channels[(int)$data["channel"]]["clients"][$client->id]["auth"])  $result3 = array("channel" => 0, "success" => false, "error" => "Access denied.  Not authenticated.", "errorcode" => "access_denied");
+					else if (!$channels[(int)$data["channel"]]["clients"][$client->id]["auth"])  $result3 = array("channel" => 0, "success" => false, "error" => "Access denied.  Not an authority.", "errorcode" => "access_denied");
 					else if (!is_numeric($data["id"]) || !isset($channels[(int)$data["channel"]]["clients"][(int)$data["id"]]))  $result3 = array("channel" => 0, "success" => false, "error" => "The 'id' is invalid.", "errorcode" => "invalid_id");
 					else if (!isset($data["extra"]) || !is_array($data["extra"]))  $result3 = array("channel" => 0, "success" => false, "error" => "The 'extra' option is missing or invalid.", "errorcode" => "missing_invalid_extra");
 					else
