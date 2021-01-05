@@ -102,6 +102,8 @@ A channel is made up of a name + protocol.  A channel is created when the first 
 
 Authorities are clearly identified by the DRC server either by an authority token or a whitelisted IP address.  They have automatic rights to grant temporary tokens to allow non-authority clients to join a channel.  Temporary grant tokens are also associated with useful information (e.g. a user ID or email address) that might be used by another authority.
 
+Native authorities (IP address only) can also grant temporary tokens that have authority on the associated channel for which they are granted.  This is useful for remoting an API through a firewall similar to [Remoted API Server](https://github.com/cubiclesoft/remoted-api-server) but uses standard WebSocket connections.
+
 Non-authority clients using a temporary grant token may join the specific channel associated with the token within 30 seconds after the temporary grant token is issued.  On leaving the channel, the grant token may be used again within 30 seconds to rejoin the channel (e.g. handles temporary network failures).
 
 The main intent of DRC is communication with and/or waiting on server-side infrastructure to process tasks.  However, building IRC-like chat systems with broadcast to/from all clients in a channel is also doable.
