@@ -384,6 +384,8 @@
 
 									foreach ($channels[$channel]["clients"] as $id3 => $info3)
 									{
+										if ($id !== $id3 && !$info["auth"] && $info["mode"] !== CM_SEND_TO_ANY && !$info3["auth"])  continue;
+
 										unset($info3["tokenid"]);
 										unset($info3["token"]);
 
