@@ -570,12 +570,39 @@
 
 				$running = false;
 			}
-			else if (file_exists($reloadfilename))
+			else if (file_exists($reloadfilename) && !filesize($reloadfilename))
 			{
 				// Reload configuration and then remove reload file.
-				echo "Reload config requested.  Exiting.\n";
+				echo "Reload requested.  Disconnecting all clients and reloading configuration.\n";
 
-				$running = false;
+				$clients = $wsserver->GetClients();
+				foreach ($clients as $client)
+				{
+					$wsserver->RemoveClient($client->id);
+
+					// Leave associated channels.
+					if ($client->appdata !== false)
+					{
+						foreach ($client->appdata["channels"] as $channel => $auth)
+						{
+							LeaveChannel($client, $channel);
+						}
+					}
+				}
+
+				$config = DRC_LoadConfig();
+
+				$whitelist = array();
+				foreach ($config["whitelist"] as $ipaddr => $protocols)
+				{
+					$ipaddr = IPAddr::NormalizeIP($ipaddr);
+					$whitelist[$ipaddr["shortipv6"]] = $protocols;
+				}
+
+				$wsserver->SetAllowedOrigins($config["origins"]);
+
+				file_put_contents($reloadfilename, "DONE");
+				@unlink($reloadfilename);
 			}
 
 			$lastservicecheck = $ts;
